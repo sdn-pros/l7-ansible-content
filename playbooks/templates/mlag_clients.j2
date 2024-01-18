@@ -1,0 +1,14 @@
+{% if mlag_client is defined%}
+
+{% for interface in mlag_client.phy_ints %}
+interface {{interface}}
+   channel-group {{mlag_client.id}} mode active
+!
+{% endfor %}
+interface Port-Channel{{mlag_client.id}}
+   switchport mode trunk
+!
+vlan {{mlag_client.id}}
+interface Vlan{{mlag_client.id}}
+   ip address {{mlag_client.prefix}}.{{mlag_client.id}}.{{mlag_client.ip}}/24
+{% endif %}

@@ -1,0 +1,18 @@
+- hosts:
+    - borderleafs_dc1
+    - borderleafs_dc2
+    - leafs_dc1
+    - leafs_dc2
+    - spines_dc1
+    - spines_dc2
+  tasks:
+  - name: apply p2p and ospf config
+    eos_config:
+      src: "{{lookup('env','PWD')}}/playbooks/templates/ospf.j2"
+      save_when: changed
+  - eos_command:
+      commands:
+        - show run sec ospf
+    register: r_eos
+
+  - debug: msg="{{r_eos.stdout_lines }}"

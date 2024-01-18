@@ -1,0 +1,19 @@
+- hosts: 
+    - leafs-dc1
+    - leafs-dc2
+  tasks:
+  - name: apply mlag interfaces configuration
+    eos_config:
+      src: "{{lookup('env','PWD')}}/playbooks/templates/mlag_servers.j2"
+      save_when: changed
+      replace: line
+
+- hosts: 
+  - hosts-dc1
+  - hosts-dc2
+  tasks:
+  - name: apply mlag interfaces configuration
+    eos_config:
+      src: "{{lookup('env','PWD')}}/playbooks/templates/mlag_clients.j2"
+      save_when: changed
+      replace: line

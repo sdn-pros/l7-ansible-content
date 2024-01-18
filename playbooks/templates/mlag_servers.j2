@@ -1,0 +1,16 @@
+{% if mlag_server is defined%}
+
+interface Ethernet{{mlag_server.id}}
+   channel-group {{mlag_server.id}} mode active
+!
+interface Port-Channel{{mlag_server.id}}
+   mlag {{mlag_server.id}}
+   switchport mode trunk
+!
+vlan {{mlag_server.id}}
+interface Vlan{{mlag_server.id}}
+   ip address {{mlag_server.prefix}}.{{mlag_server.id}}.{{mlag_server.ip}}/24
+   vrrp {{mlag_server.id}} ip {{mlag_server.prefix}}.{{mlag_server.id}}.254
+!
+{% endif %}
+
